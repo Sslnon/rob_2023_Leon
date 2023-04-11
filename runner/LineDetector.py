@@ -1,18 +1,31 @@
 from robomaster import robot
 import cv2
-from id.PointInfo import PointInfo
+from info.PointInfo import PointInfo
 
 line = []
 class LineDetector:
     def __init__(self, ep_robot, ep_chassis):
+        """ construct/init the vision function
+        :param ep_robot: robot object
+        :param ep_chassis: ep_chassis object
+        :return:
+        """
         self.ep_vision = ep_robot.vision
         self.ep_vision.sub_detect_info(name="line", color="blue", callback=self.on_detect_line)
 
         self.ep_chassis = ep_chassis
     def cancelDetect(self):
+        """ cancel detector
+        :param:
+        :return:
+        """
         self.ep_vision.unsub_detect_info(name="line")
 
     def on_detect_line(self,line_info):
+        """ detect the car on the line
+        :param line_info: line info
+        :return:
+        """
         number = len(line_info)
         line.clear()
         if number > 0:
@@ -21,9 +34,13 @@ class LineDetector:
                 x, y, ceta, c = line_info[i]
                 line.append(PointInfo(x, y, ceta, c))
         else:
-            print('未识别到线')
+            print('no line')
 
     def followLine(self,img):
+        """ let the car run and follow line
+        :param img: cv2 img
+        :return:
+        """
         line_tmp = line.copy()
         for j in range(0, len(line_tmp)):
             cv2.circle(img, line_tmp[j].pt, 3, line_tmp[j].color, -1)
