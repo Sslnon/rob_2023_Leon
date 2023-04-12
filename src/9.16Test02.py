@@ -165,10 +165,8 @@ def getCapture(frame1):
                 error_X = 0.5 - markers[j]._x
                 error_y = markers[j]._y - 0.5
                 if abs(error_X) <= 0.02 and abs(error_y) <= 0.02:
-                    # cv2.rectangle(frame1, markers[j].pt2, markers[j].pt1,
-                    #               (255, 255, 255))
                     cv2.putText(frame1,
-                                "Team 09 detects a marker with ID of " + markers[j].text, markers[j].center,
+                                "detects a marker with ID of " + markers[j].text, markers[j].center,
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.4,
                                 (255, 255, 255),
                                 2, bottomLeftOrigin=None)

@@ -12,7 +12,6 @@ class LineDetector:
         """
         self.ep_vision = ep_robot.vision
         self.ep_vision.sub_detect_info(name="line", color="blue", callback=self.on_detect_line)
-
         self.ep_chassis = ep_chassis
     def cancelDetect(self):
         """ cancel detector
@@ -53,6 +52,6 @@ class LineDetector:
             error_8 = 0.5 - point_x_8
 
             self.ep_chassis.drive_speed(x=0.25, y=0, z=angle_output)
-        else:
-            self.ep_chassis.drive_speed(x=-0.1, y=0, z=0)
+        # else:
+        #     self.ep_chassis.drive_speed(x=-0.1, y=0, z=0)
 
