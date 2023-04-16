@@ -7,8 +7,10 @@ class markerFinding:
     def __init__(self, ep_robot, ep_chassis):
         self.ep_chassis = ep_chassis
         self.ep_vision = ep_robot.vision
-        self.ep_vision.sub_detect_info(name="marker", callback=self.on_detect_marker)
 
+
+    def detect(self):
+        self.ep_vision.sub_detect_info(name="marker", callback=self.on_detect_marker)
 
     def cancelDetect(self):
         """ cancel detector
@@ -27,8 +29,8 @@ class markerFinding:
 
     def stop(self,img):
         if len(markers) > 0:
-            self.ep_chassis.drive_speed(x=0, y=0, z=0)
             print("Finding")
+
 
 
 

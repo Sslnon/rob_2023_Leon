@@ -28,21 +28,24 @@ class RobotController:
         # init 3 module
         ep_camera = CameraController(self.ep_robot)
         ep_sensor = DistanceSensor(self.ep_robot,self.ep_chassis)
+        ep_vison_line = LineDetector(self.ep_robot, self.ep_chassis)
+        ep_vison_marker = markerFinding(self.ep_robot, self.ep_chassis)
 
-
+        sign = 0
         while True:
             img = ep_camera.readImage()
-            # distance = ep_sensor.dis_check()
-            # if(distance > 400):
-            # ep_vison_line = LineDetector(self.ep_robot, self.ep_chassis)
-            # ep_vison_line.followLine(img)
-            # ep_vison_line.cancelDetect()
+            distance = ep_sensor.dis_check()
 
-            ep_vison_marker = markerFinding(self.ep_robot, self.ep_chassis)
-            ep_vison_marker.stop(img)
+            if(distance > 400):
+                ep_vison_line.detect()
+                ep_vison_line.followLine(img)
+                ep_vison_line.cancelDetect()
 
-            # time.sleep(0.001)
-            cv2.imshow("marker",img)
+                ep_vison_marker.detect()
+                ep_vison_marker.stop(img)
+                ep_vison_line.cancelDetect()
+
+            cv2.imshow("CV",img)
 
             # close
             key = cv2.waitKey(1)
@@ -50,7 +53,7 @@ class RobotController:
                 print("end")
                 self.ep_chassis.drive_speed(x=0, y=0, z=0)
                 break
-        # ep_vison_line.cancelDetect()
+        ep_vison_line.cancelDetect()
         ep_vison_marker.cancelDetect()
         ep_camera.cancelCamera()
         cv2.destroyAllWindows()
